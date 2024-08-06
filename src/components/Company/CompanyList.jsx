@@ -3,6 +3,7 @@ import TableList from './TableList'
 import { Button, Container, FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material'
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
+import { Link } from 'react-router-dom';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -43,7 +44,7 @@ const CompanyList = () => {
               <Button variant="outlined" style={{ height: '30px', margin: '5px' }}>Search</Button>
             </Grid>
             <Grid xs={4} display={'flex'} justifyContent={'end'} alignItems={'center'}>
-              <Button variant="outlined" style={{ height: '30px', margin: '5px' }}>Add New</Button>
+              <Link to={'/company-detail'}><Button variant="outlined" style={{ height: '30px', margin: '5px' }} >Add New</Button></Link>
             </Grid>
           </Grid>
           <Grid xs={12} border={'0.2px solid gray'} padding={'5px'} borderRadius={'5px'}>
