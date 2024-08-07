@@ -22,6 +22,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 
+
+let FetchCompList = localStorage.getItem("CompList");
+
 function createData(id, name, calories, fat, carbs, protein) {
   return {
     id,
@@ -33,7 +36,8 @@ function createData(id, name, calories, fat, carbs, protein) {
   };
 }
 
-const rows = [
+
+const rows = FetchCompList != null ? JSON.parse(FetchCompList) : [
   createData(1, 'Cupcake', 305, 3.7, 67, 4.3),
   createData(2, 'Donut', 452, 25.0, 51, 4.9),
   createData(3, 'Eclair', 262, 16.0, 24, 6.0),
@@ -81,38 +85,56 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-const headCells = [
-  {
-    id: 'name',
-    numeric: false,
-    disablePadding: true,
-    label: 'Dessert (100g serving)',
-  },
-  {
-    id: 'calories',
-    numeric: true,
-    disablePadding: false,
-    label: 'Calories',
-  },
-  {
-    id: 'fat',
-    numeric: true,
-    disablePadding: false,
-    label: 'Fat (g)',
-  },
-  {
-    id: 'carbs',
-    numeric: true,
-    disablePadding: false,
-    label: 'Carbs (g)',
-  },
-  {
-    id: 'protein',
-    numeric: true,
-    disablePadding: false,
-    label: 'Protein (g)',
-  },
-];
+const headCells = FetchCompList != null ? [{
+  id: 'srNo',
+  numeric: true,
+  disablePadding: true,
+  label: 'Serial No.',
+},
+{
+  id: 'CompanyName',
+  numeric: false,
+  disablePadding: false,
+  label: 'Company Name',
+},
+{
+  id: 'CompanyDesc',
+  numeric: true,
+  disablePadding: false,
+  label: 'Company Description',
+}]
+  : [
+    {
+      id: 'name',
+      numeric: false,
+      disablePadding: true,
+      label: 'Dessert (100g serving)',
+    },
+    {
+      id: 'calories',
+      numeric: true,
+      disablePadding: false,
+      label: 'Calories',
+    },
+    {
+      id: 'fat',
+      numeric: true,
+      disablePadding: false,
+      label: 'Fat (g)',
+    },
+    {
+      id: 'carbs',
+      numeric: true,
+      disablePadding: false,
+      label: 'Carbs (g)',
+    },
+    {
+      id: 'protein',
+      numeric: true,
+      disablePadding: false,
+      label: 'Protein (g)',
+    },
+  ];
 
 function EnhancedTableHead(props) {
   const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
@@ -225,7 +247,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function TableList() {
+export default function TableList(props) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
@@ -318,7 +340,39 @@ export default function TableList() {
                 const isItemSelected = isSelected(row.id);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
-                return (
+                return (FetchCompList!=null?<>
+                <TableRow
+                    hover
+                    onClick={(event) => handleClick(event, row.id)}
+                    role="checkbox"
+                    aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={row.id}
+                    selected={isItemSelected}
+                    sx={{ cursor: 'pointer' }}
+                  >
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        color="primary"
+                        checked={isItemSelected}
+                        inputProps={{
+                          'aria-labelledby': labelId,
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      padding="none"
+                      align="right"
+                    >
+                      {index+1}
+                    </TableCell>
+                    <TableCell align="left">{row.comp_name}</TableCell>
+                    <TableCell align="right">{row.comp_desc}</TableCell>
+                  </TableRow>
+                </>:
                   <TableRow
                     hover
                     onClick={(event) => handleClick(event, row.id)}

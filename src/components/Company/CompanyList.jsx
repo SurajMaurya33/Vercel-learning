@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import TableList from './TableList'
 import { Button, Container, FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material'
 import { styled } from '@mui/material/styles';
@@ -15,10 +15,17 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const CompanyList = () => {
   const [age, setAge] = React.useState('');
+  const [CompList, setCompList] = React.useState([]);
 
   const handleChange = (event) => {
     setAge(event.target.value);
   };
+useEffect(()=>{
+  let FetchCompList = localStorage.getItem("CompList");
+  if(FetchCompList!=null){
+    setCompList(JSON.parse(FetchCompList));
+  }
+},[])
   return (
     <div>
       <Container style={{ marginTop: "25px" }}>
@@ -49,7 +56,7 @@ const CompanyList = () => {
           </Grid>
           <Grid xs={12} border={'0.2px solid gray'} padding={'5px'} borderRadius={'5px'}>
             <Item>
-              <TableList />
+              <TableList CompList={CompList} />
             </Item>
           </Grid>
 
